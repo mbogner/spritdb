@@ -1,0 +1,48 @@
+application:
+  kafka:
+    topic: sprit_updates
+  tasks:
+    priceDownloader:
+      cron: "*/10 * * * * *"
+  config:
+    areas:
+      - name: Purkersdorf
+        lat: 48.19761268125243
+        lon: 16.147606848044443
+      - name: Schärding
+        lat: 48.45196158572461
+        lon: 13.435973118471155
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: BASIC
+        decode404: false
+        retryer: dev.mbo.client.retry.NoRetryer
+      searchApi:
+        url: https://api.e-control.at
+        basePath: /sprit/1.0
+  compression:
+    request:
+      enabled: true
+      mime-types: application/json,text/xml,application/xml,text/html
+      min-request-size: 2048
+
+logging:
+  level:
+    root: INFO
+    dev.mbo: TRACE
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  main:
+    banner-mode: off

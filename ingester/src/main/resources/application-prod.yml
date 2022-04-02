@@ -1,0 +1,9 @@
+application:
+  tasks:
+    priceDownloader:
+      cron: "0 0 */2 * * *"
+
+logging:
+  level:
+    root: INFO
+    dev.mbo: INFO
